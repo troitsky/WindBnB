@@ -1,9 +1,11 @@
 import './DrawerMenu.css'
 
-export default function DrawerMenu() {
+export default function DrawerMenu(props) {
     
+    const {open} = props;
+    console.log('open: ', open)
     return (
-        <nav className="drawer_menu">
+        <nav className="drawer_menu" style={!open ? {display: "none"} : null}>
           <div className="search_options_bar">
             <div className="drawer_input_background" style={{borderColor: "#333333"}}>
               <label htmlFor="locationInput" className='drawer_text_input_label'>Location</label>
@@ -21,11 +23,8 @@ export default function DrawerMenu() {
             <div className="location_search_results_container">
               <ul className='location_search_results_list'>
                 <li className="location_search_result_item"><i class="fa-solid fa-location-dot"></i>Helskinki, Finland</li>
-              </ul>
-              <ul className='location_search_results_list'>
                 <li className="location_search_result_item"><i class="fa-solid fa-location-dot"></i>Helskinki, Finland</li>
-              </ul>
-              <ul className='location_search_results_list'>
+                <li className="location_search_result_item"><i class="fa-solid fa-location-dot"></i>Helskinki, Finland</li>
                 <li className="location_search_result_item"><i class="fa-solid fa-location-dot"></i>Helskinki, Finland</li>
               </ul>
             </div>
@@ -35,18 +34,18 @@ export default function DrawerMenu() {
                 <p className="guest_settings_title">Adults</p>
                 <p className="guest_settings_subtitle">Ages 13 or above</p>
                 <div class="quantity-part">
-                    <div class="btn btn-decrease"><i class="fa-solid fa-minus"></i></div>
+                    <div class="btn btn-plus-minus"><i class="fa-solid fa-minus"></i></div>
                     <input type="number" class="guest-qty" value="0" min="0" id="" />
-                    <div class="btn btn-increase"><i class="fa-solid fa-plus"></i></div>
+                    <div class="btn btn-plus-minus"><i class="fa-solid fa-plus"></i></div>
                 </div>
               </div>
               <div className="guest_settings_block">
                 <p className="guest_settings_title">Children</p>
                 <p className="guest_settings_subtitle">Ages 2-12</p>
                 <div class="quantity-part">
-                    <div class="btn btn-decrease"><i class="fa-solid fa-minus"></i></div>
+                    <div class="btn btn-plus-minus"><i class="fa-solid fa-minus"></i></div>
                     <input type="number"  class="guest-qty" value="0" min="0" id="" />
-                    <div class="btn btn-increase"><i class="fa-solid fa-plus"></i></div>
+                    <div class="btn btn-plus-minus"><i class="fa-solid fa-plus"></i></div>
                 </div>
               </div>
             </div>

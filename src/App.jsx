@@ -5,12 +5,13 @@ import ReservationCard from './components/ReservationCard/ReservationCard'
 import DrawerMenu from './components/DrawerMenu/DrawerMenu'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [menuOpen, setMenuOpen] = useState(false)
 
   return (
     <div className="App">
       <div className="app_container">
-        <DrawerMenu />
+        <DrawerMenu open={menuOpen} />
+
         <header className='header'>
           <img src="logo.svg" alt="" className="logo" />
           <div className="btn-group">

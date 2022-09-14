@@ -7,6 +7,7 @@
     background-color: white;
     padding: 93px 96px;
     font-family: 'Mulish';
+    z-index: 1;
 }
 
 .search_options_bar { 
@@ -19,7 +20,7 @@
 
 }
 .drawer_input_background {
-    flex: 1 1 0;
+    flex: 1 1 33.3%;
     border: 1px solid #F2F2F2;
     padding: 12px 26px 8px;
     border-radius: 16px;
@@ -65,20 +66,75 @@ input[type="text"] {
     border-color: transparent;
     padding: 13px 25px;
 }
-.fa-solid { }
-.fa-magnifying-glass { }
-.search_options_setting_containers { }
-.location_search_results_container { }
-.location_search_results_list { }
-.location_search_result_item { }
-.fa-location-dot { }
-.guest_search_settings_container { }
-.guest_settings_block { }
-.guest_settings_title { }
-.guest_settings_subtitle { }
-.quantity-part { }
-.btn-decrease { }
-.fa-minus { }
-.guest-qty { }
-.btn-increase { }
-.fa-plus { }
+
+.search_options_setting_containers {
+    display: flex;
+
+ }
+.location_search_results_container { 
+    display: none;
+}
+.location_search_results_list { 
+    list-style: none;
+    padding-left: 27px;
+    
+}
+.location_search_result_item {
+    margin-top: 36px;
+ }
+ .location_search_results_list  .fa-location-dot { 
+    padding-right: 10px;
+ }
+.guest_search_settings_container {
+    padding-left: calc(33.3% + 26px);
+ }
+.guest_settings_block { 
+    margin-top: 48px;
+
+}
+.guest_settings_title {
+    font-weight: 700;
+    
+
+ }
+.guest_settings_subtitle { 
+    font-weight: 300;
+    color: #BDBDBD
+}
+.quantity-part { 
+    width: 83px;
+    margin-top: 12px;
+    display: flex;
+    border-radius: 10px;
+    justify-content: space-between;
+    align-items: center;
+    }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+    }
+
+.btn-plus-minus {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #828282;
+    border-radius: 4px;
+    padding: 5px;
+    line-height: 1;
+    font-size: 12px;
+ }
+
+.guest-qty { 
+    flex: auto;
+    width: 40px;
+    appearance: textfield;
+    border: 0px;
+    background-color: transparent;
+    text-align: center;
+}
