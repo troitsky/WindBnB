@@ -1,0 +1,55 @@
+.reservation_card { 
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space:  nowrap;
+}
+.reservation_card_image { 
+    width: 100%;
+    max-height: 267px;
+    border-radius: 7%/9%;
+    object-fit: cover;
+}
+
+.reservation_card_details_row {
+    margin: 17px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.super_host_tag { 
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 15px;
+    color: #4F4F4F;
+    border: 1px solid #4F4F4F;
+    border-radius: 12px;
+    padding: 7px 10px;
+    margin-right: 10px;
+}
+.reservation_type { 
+    font-weight: 500;
+    color: #828282;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+}
+.reservation_score { 
+    color: #4F4F4F;
+    margin-left: auto;
+}
+
+.fa-star { 
+    color: #EB5757;
+    padding-right: 7px;
+}
+.reservation_card_description { 
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 20px;
+    text-align: right;
+    text-decoration: none;
+    color: #4F4F4F;
+
+}
