@@ -159,3 +159,40 @@ footer {
     grid-template-columns: repeat(4, 1fr);
    }
 }
+
+@media screen and (max-width: 1150px) {
+  .cards_container {
+    grid-template-columns: repeat(2, 1fr);
+   }
+}
+
+@media screen and (max-width: 700px) {
+  .App {
+    padding: 22px 12px;
+  }
+
+  .cards_container {
+    grid-template-columns: repeat(1, 1fr);
+   }
+
+  .header {
+    display: block;
+  }
+
+  .btn-group {
+    margin: 39px auto 0;
+  
+  }
+
+  .btn_add_guests, .btn_choose_location {
+    width: 40%
+  }
+
+  .btn-group button:last-child {
+    width: 20%
+  }
+
+  .btn_mobile_close {
+    font-size: 20px;
+  }
+}

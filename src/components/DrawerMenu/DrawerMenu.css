@@ -13,12 +13,13 @@
 }
 
 .search_options_bar { 
-    width: 100%;
+    max-width: 1600px;
     display: flex;
     align-items: center;
     background: #FFFFFF;
     box-shadow: 0px 1px 6px rgba(0, 0, 0, 0.1);
     border-radius: 16px;
+    margin: 0 auto;
 }
 .drawer_input_background {
     flex: 1 1 33.3%;
@@ -70,10 +71,13 @@ input[type="text"] {
 
 .search_options_setting_containers {
     display: flex;
+    position: relative;
+    max-width: 1600px;
+    margin: 0 auto;
+
 
  }
 .location_search_results_container { 
-    display: none;
 }
 .location_search_results_list { 
     list-style: none;
@@ -87,10 +91,11 @@ input[type="text"] {
     padding-right: 10px;
  }
 .guest_search_settings_container {
-    padding-left: calc(33.3% + 26px);
+    left: calc(33.3% + 26px);
+    position: absolute;
  }
 .guest_settings_block { 
-    margin-top: 48px;
+    margin-top: 28px;
 
 }
 .guest_settings_title {
@@ -138,4 +143,58 @@ input[type=number] {
     border: 0px;
     background-color: transparent;
     text-align: center;
+}
+
+.btn_mobile_search {
+    display: none;
+}
+
+.btn_search_red i {
+    padding-right: 10px;
+}
+
+.mobile_topbar {
+    display: none;
+}
+
+.search_options_bar input:disabled {
+    background-color: transparent;
+}
+
+@media screen and (max-width: 700px) {
+.drawer_menu {
+    padding: 18px 22px;
+    height: auto;
+    max-height: 645px;
+  }
+
+  .search_options_bar {
+    display: block;
+  }
+
+  .drawer_input_background:last-child {
+    display: none;
+  }
+
+  .guest_search_settings_container  {
+    position: initial;
+    left: 0;
+    padding-left: 27px;
+  }
+
+  .btn_mobile_search {
+    display: block;
+    margin: 24px auto;
+  }
+
+  .mobile_topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  
+  .mobile_menu_title {
+    font-weight: 700;
+  }
 }

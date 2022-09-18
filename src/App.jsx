@@ -11,6 +11,9 @@ function App() {
   const [filterParams, setFilterParamas] = useState({city: '', country: '', guests: 0 })
   const [locationInput, setLocationInput] = useState(null);
   const [guestsInput, setGuestsInput] = useState(null);
+  const [adultsInput, setAdultInput] = useState(0);
+  const [chidlrenInput, setChildrenInput] = useState(0);
+  
   
   async function getStaysData() {
     const data = await fetch('./data/stays.json').then(res => res.json())
@@ -47,31 +50,45 @@ function App() {
     setStaysDataFromAPI()
   }, [])
 
-
-  // Filter stays when  filters change but not on first render
-  useLayoutEffect(() => {
+//update output with provided filters
+async function updateFilters() {
+  // get stays from json and set state anew (dont forget await)
+  await setStaysDataFromAPI();
+  if (filterParams.city) {
+    setStays(prev => prev.filter(cityFilter))
+  }
+  if (filterParams.guests) {
+    setStays(prev => prev.filter(guestsFilter))
+  }
+  toggleDrawerMenu()       
+}
+  // // Filter stays when  filters change but not on first render
+  // useLayoutEffect(() => {
      
-    async function updateFilters() {
-      // get stays from json and set state anew (dont forget await)
-      await setStaysDataFromAPI();
-      if (filterParams.city) {
-        setStays(oldStays => oldStays.filter(cityFilter))
-      }
-      if (filterParams.guests) {
-        setStays(oldStays => oldStays.filter(guestsFilter))
-      }       
-    }
-    updateFilters()
-  }, [filterParams.city, filterParams.guests])
+  //   async function updateFilters() {
+  //     // get stays from json and set state anew (dont forget await)
+  //     await setStaysDataFromAPI();
+  //     if (filterParams.city) {
+  //       setStays(oldStays => oldStays.filter(cityFilter))
+  //     }
+  //     if (filterParams.guests) {
+  //       setStays(oldStays => oldStays.filter(guestsFilter))
+  //     }       
+  //   }
+  //   updateFilters()
+  // }, [filterParams.city, filterParams.guests])
+
+useEffect(() => {
+  setGuestsInput(chidlrenInput+adultsInput)
+}, [adultsInput, chidlrenInput])
 
 // change guest filter when guests number change
   useEffect(() => {
     setFilterParamas(oldFilterParams => ({...oldFilterParams, guests: guestsInput}))
-
   }, [guestsInput])
 
   function handleLocationInput(e) {
-    const value = e.target.value
+    const value = e.target.textContent
     setLocationInput(value)
     const separatedLocationInput = value.split(',')
     const city = separatedLocationInput[0]
@@ -83,8 +100,17 @@ function App() {
     setGuestsInput(value)
   }
 
-  function guestsIncrease() {setGuestsInput(oldGuests => oldGuests+1)}
-  function guestsDecrease() {setGuestsInput(oldGuests => oldGuests-1)}
+  function guestsIncrease(guestType) { 
+    console.log("guest increase tiggeres")
+    if (guestType === "Adults") {setAdultInput(oldNum => oldNum+1)}
+    if (guestType === "Children") {setChildrenInput(oldNum => oldNum+1)}
+  }
+  
+  function guestsDecrease(guestType) { 
+    if (guestType === "Adults") {adultsInput > 0 && setAdultInput(oldNum => oldNum-1)}
+    if (guestType === "Children") {chidlrenInput > 0 && setChildrenInput(oldNum => oldNum-1)}
+  }
+    
 
   let ReservationCards = stays.map(stay => 
      <ReservationCard 
@@ -115,13 +141,18 @@ function App() {
             city={filterParams.city}
             locationInput={locationInput}
             guestsInput={guestsInput}
+            chidlrenInput={chidlrenInput}
+            adultsInput={adultsInput}
             guestsIncrease={guestsIncrease}
             guestsDecrease={guestsDecrease}
+            getStaysData={getStaysData}
+            updateFilters={updateFilters}
+            toggleDrawerMenu={toggleDrawerMenu}
           />
           <header className='header'>
             <img src="logo.svg" alt="" className="logo" />
             <div className="btn-group">
-              <button onClick={toggleDrawerMenu}>{locationInput ? locationInput : "Finland"}</button>
+              <button className='btn_choose_location' onClick={toggleDrawerMenu}>{locationInput ? locationInput : "Finland"}</button>
               <button className='btn_add_guests' onClick={toggleDrawerMenu}>{guestsInput ? `${guestsInput} guests` : 'Add guests'}</button>
               <button className='btn btn_search' onClick={toggleDrawerMenu}><i className="fa-solid fa-magnifying-glass"></i></button>
             </div>
