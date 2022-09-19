@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect  } from 'react'
+import { useState, useEffect, useRef  } from 'react'
 import './App.css'
 import '/logo.svg'
 import ReservationCard from './components/ReservationCard/ReservationCard'
@@ -6,14 +6,14 @@ import DrawerMenu from './components/DrawerMenu/DrawerMenu'
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [pageOverlayShown, setpageOverlayShown] = useState(false)
   const[stays, setStays] = useState([])
   const [filterParams, setFilterParamas] = useState({city: '', country: '', guests: 0 })
   const [locationInput, setLocationInput] = useState(null);
   const [guestsInput, setGuestsInput] = useState(null);
   const [adultsInput, setAdultInput] = useState(0);
   const [chidlrenInput, setChildrenInput] = useState(0);
-  
+  // reference for drawer menu node which we will pass to our child component
+  const drawerMenuRef = useRef(null);
   
   async function getStaysData() {
     const data = await fetch('./data/stays.json').then(res => res.json())
@@ -26,7 +26,6 @@ function App() {
 
   function guestsFilter(stay) {
     if (stay.maxGuests >= filterParams.guests) {return true}
-    console.log('guest filter fired')
     return false;
   }
   
@@ -40,17 +39,12 @@ function App() {
     setMenuOpen(menuOpen => !menuOpen)
   }
 
-  // Show|hide overlay
-  useEffect(() => {
-    setpageOverlayShown(pageOverlayShown => !pageOverlayShown)
-  }, [menuOpen])
-
 // Get stays data on first render
   useEffect( () => {
     setStaysDataFromAPI()
   }, [])
 
-//update output with provided filters
+//update output cards with provided filters and close menu
 async function updateFilters() {
   // get stays from json and set state anew (dont forget await)
   await setStaysDataFromAPI();
@@ -62,22 +56,29 @@ async function updateFilters() {
   }
   toggleDrawerMenu()       
 }
-  // // Filter stays when  filters change but not on first render
-  // useLayoutEffect(() => {
-     
-  //   async function updateFilters() {
-  //     // get stays from json and set state anew (dont forget await)
-  //     await setStaysDataFromAPI();
-  //     if (filterParams.city) {
-  //       setStays(oldStays => oldStays.filter(cityFilter))
-  //     }
-  //     if (filterParams.guests) {
-  //       setStays(oldStays => oldStays.filter(guestsFilter))
-  //     }       
-  //   }
-  //   updateFilters()
-  // }, [filterParams.city, filterParams.guests])
 
+// When drawer menu is open this function will check if user clicke outside menu to close it
+  useEffect(() => {
+
+    function handleClickOutside(e) {
+
+    // check if menu exists and if user clicked outside of it or it's children then close this drawer menu
+      if (drawerMenuRef.current && !drawerMenuRef.current.contains(e.target)) {
+          toggleDrawerMenu()
+        }
+      }
+    // add click listener to window if menu is open. Important to use 'mousedown' instead of 'click' event (dont really get why)
+    if (menuOpen) {
+      window.addEventListener('mousedown', handleClickOutside)
+    }
+
+    // clean up after drawer menu is hidden
+    return () => {
+      window.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [menuOpen])
+
+// Count total guests including adults and children
 useEffect(() => {
   setGuestsInput(chidlrenInput+adultsInput)
 }, [adultsInput, chidlrenInput])
@@ -87,6 +88,7 @@ useEffect(() => {
     setFilterParamas(oldFilterParams => ({...oldFilterParams, guests: guestsInput}))
   }, [guestsInput])
 
+  // allow choosing location from suggested list and and city filter
   function handleLocationInput(e) {
     const value = e.target.textContent
     setLocationInput(value)
@@ -95,10 +97,6 @@ useEffect(() => {
     setFilterParamas(oldFilterParams => ({...oldFilterParams, city: city}))
   }
   
-  function handleGuestsInput(e) {
-    const value = Number(e.target.value)
-    setGuestsInput(value)
-  }
 
   function guestsIncrease(guestType) { 
     console.log("guest increase tiggeres")
@@ -131,13 +129,11 @@ useEffect(() => {
   return (
     <>
       <div className="App">
-        <div className="pageOverlay" onClick={toggleDrawerMenu} style={pageOverlayShown ? {display: "block"} : null}></div> 
+        <div className="pageOverlay" style={menuOpen ? {display: "block"} : null}></div> 
 
         <div className="app_container">
           <DrawerMenu 
-            open={menuOpen}  
             handleLocationInput={handleLocationInput}
-            handleGuestsInput = {handleGuestsInput}
             city={filterParams.city}
             locationInput={locationInput}
             guestsInput={guestsInput}
@@ -148,6 +144,8 @@ useEffect(() => {
             getStaysData={getStaysData}
             updateFilters={updateFilters}
             toggleDrawerMenu={toggleDrawerMenu}
+            drawerMenuRef={drawerMenuRef}
+            menuOpen={menuOpen}
           />
           <header className='header'>
             <img src="logo.svg" alt="" className="logo" />

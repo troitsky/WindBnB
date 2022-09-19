@@ -1,12 +1,14 @@
-import {useState} from 'react'
+import {useState, useEffect, useRef} from 'react'
 import "./DrawerMenu.css";
 
 export default function DrawerMenu(props) {
-  const { open, handleLocationInput, handleGuestsInput, locationInput, guestsInput, guestsIncrease, guestsDecrease, adultsInput, chidlrenInput, getStaysData, updateFilters, toggleDrawerMenu} = props;
+  const { menuOpen, handleLocationInput, locationInput, guestsInput, guestsIncrease, guestsDecrease, adultsInput, chidlrenInput, getStaysData, updateFilters, toggleDrawerMenu, drawerMenuRef} = props;
 
-  let [showGuestInputmenu, setShowGuestInputmenu] = useState(false)
-  let [showLocationInputmenu, setShowLocationInputmenu] = useState(false)
-  let [cities, setCities] = useState(null)
+  const [showGuestInputmenu, setShowGuestInputmenu] = useState(false)
+  const [showLocationInputmenu, setShowLocationInputmenu] = useState(false)
+  const [cities, setCities] = useState(null)
+
+
 
   // function to get list of avaible city-country pairs with additional api call because stays in current parent state may be already filtered and we here want all avaible pairs
   async function getCitiesFromAPI() {
@@ -19,8 +21,8 @@ export default function DrawerMenu(props) {
       </li>
       )
     )
-
   }
+
 
   function handleLocationInputClick() {
     setShowGuestInputmenu(false);
@@ -34,7 +36,7 @@ export default function DrawerMenu(props) {
   }
 
   return (
-    <nav className="drawer_menu" style={open ? { transform: "none" } : null}>
+    <nav ref={drawerMenuRef} className="drawer_menu" style={menuOpen ? { transform: "none" } : null}>
       <div className="mobile_topbar">
         <p className="mobile_menu_title">Edit your search</p>
         <i onClick={toggleDrawerMenu} class="fa-solid fa-xmark btn btn_mobile_close"></i>
@@ -70,7 +72,6 @@ export default function DrawerMenu(props) {
             className="drawer_text_input"
             type="number"
             placeholder="Add guests"
-            onChange={handleGuestsInput}
             value = {guestsInput}
             disabled
           />
